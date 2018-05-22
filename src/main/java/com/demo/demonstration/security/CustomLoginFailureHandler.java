@@ -20,17 +20,8 @@ public class CustomLoginFailureHandler implements AuthenticationFailureHandler {
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)
 			throws IOException, ServletException {
-	/*	String message = "";
-
-		if(exception.getClass() == UsernameNotFoundException.class) {
-			message = "cannot find a user";
-		} else if(exception.getClass() == BadCredentialsException.class) {
-			message = "check your password";
-		}
-		System.out.println("Inside handler");*/
 		request.setAttribute("exception", exception);
 		 redirectStrategy.sendRedirect(request, response, "/error?msg=Bad Credentials");
-
 	}
 
 }
