@@ -1,61 +1,53 @@
 package com.demo.demonstration;
 
-import java.util.Arrays;
-
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import com.demo.demonstration.model.CategoryProductMap;
-import com.demo.demonstration.model.Product;
+import com.demo.demonstration.model.Users;
+import com.demo.demonstration.service.UserServiceImpl;
 
 /**
  * Hello world!
  *
  */
 @SpringBootApplication
-public class MainClass 
+public class MainClass implements CommandLineRunner
 {
-
+	
 	@Autowired
-	CategoryProductMap categoryProductMap;
-
+	UserServiceImpl usi;
+	
 	
     public static void main( String[] args )
     {
+        //System.out.println( "Hello World!" );
         SpringApplication.run(MainClass.class, args);
     }
 
+	@Override
+	public void run(String... args) throws Exception {
+		System.out.println("Not Implementing anything from command line runner");
+	}
 	@PostConstruct
-	public void abcd() {
-		Product obj1 = new Product();
-		obj1.setId(1);
-		obj1.setName("reebok");
-		obj1.setDescription("It is a new shoe of Rebook");
-		obj1.setImageUrl("url1");
-		obj1.setRelatedProducts(Arrays.asList("laces","shoe-polish"));
-		categoryProductMap.addObj("shoes", obj1);
-		
-		
-		
-		Product obj2 = new Product();
-		obj2.setId(2);
-		obj2.setName("adidas");
-		obj2.setDescription("It is a new shoe of Adidas");
-		obj2.setImageUrl("url2");
-		obj2.setRelatedProducts(Arrays.asList("laces","shoe-polish"));
-		categoryProductMap.addObj("shoes", obj2);
-		
-		
-		Product obj3 = new Product();
-		obj3.setId(3);
-		obj3.setName("Redmi Note 4");
-		obj3.setDescription("It is a new mobile of Redmi");
-		obj3.setImageUrl("urlRedmi");
-		obj3.setRelatedProducts(Arrays.asList("BackCover","Tempered Glass"));
-		categoryProductMap.addObj("mobiles", obj3);
-		
+	public void abcd()
+	{
+		Users user1 = new Users("abc123", "abc", "a@hcl.com", "ROLE_admin", 1);
+		Users user2 = new Users("bcd123", "bcd", "b@hcl.com", "ROLE_user", 1);
+		System.out.println("saving user1");
+		usi.saveUser(user1);
+		System.out.println("saving user2");
+		usi.saveUser(user2);
+	}
+	
+	@Bean
+	public BCryptPasswordEncoder passwordEncoder() {
+		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+		return bCryptPasswordEncoder;
 	}
 }
